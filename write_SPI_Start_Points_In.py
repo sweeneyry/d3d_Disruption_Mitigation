@@ -6,7 +6,7 @@ Created on Fri Feb 22 10:30:44 2019
 """
 
 import numpy as np
-from write_2D_Data_To_File import write_2D_Data_To_File
+from Util.write_2D_Data_To_File import write_2D_Data_To_File
 
 """
 For the TRIP3D start.points.in, we need to convert the SPI trajectory from R,

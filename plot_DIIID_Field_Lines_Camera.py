@@ -7,12 +7,13 @@ Created on Wed Oct 10 15:32:00 2018
 
 import numpy as np
 import matplotlib.pyplot as plt
-from read_3D_Data_To_Array import read_3D_Data_To_Array
+from Util.read_3D_Data_To_Array import read_3D_Data_To_Array
 from change_To_Camera_Angles import change_To_Camera_Angles
 from pixels_Vacuum_Vessel import pixels_Vacuum_Vessel
 from pixels_To_Image_Coords import pixels_To_Image_Coords
 from write_SPI_Start_Points_In import write_SPI_Start_Points_In
 import matplotlib
+
 
 # Plotting properties
 colorVes= 'red'
@@ -26,7 +27,7 @@ matplotlib.rc('font', **font)
 totalXPixels = 384.
 totalYPixels = 384.
 
-fieldLinesOn=0
+fieldLinesOn=1
 
 deg2Rad = np.pi/180.
 
@@ -52,10 +53,7 @@ Zc = fitPars[8]
     
 
 
-filename = '/Users/Ryan/Google_Drive/ITER_Laptop/Work/DIIID_Experiment/Raman/TRIP3D/172281/psi0p4/out.92'
-allFieldLines = read_3D_Data_To_Array(filename)
-# get the data out of the tuple
-allFieldLines = allFieldLines[0]
+
 
 # reading in the image, and collecting image information. the strategy here
 # will be to manipulate the image to match the field lines and various structures,
@@ -82,17 +80,20 @@ allFieldLines = allFieldLines[0]
 
 
 #172281
-#filename = 'C:/Users/sweener/Documents/Work/DIIID_Experiment/Raman/Visible_Camera/Raman_Ryan/172281_1906p895us.png'
+#filename = '/Users/Ryan/Google_Drive/ITER_Laptop/Work/DIIID_Experiment/Raman/Visible_Camera/Raman_Ryan/172281_1906p895us.png'
 #filename = 'C:/Users/sweener/Documents/Work/DIIID_Experiment/Raman/Visible_Camera/Raman_Ryan/172281_1906p839us_highPass.png'
 
 
 # 172282
-#filename = 'C:/Users/sweener/Documents/Work/DIIID_Experiment/Raman/Visible_Camera/Raman_Ryan/172282_1906p947us.png'
-#filename = 'C:/Users/sweener/Documents/Work/DIIID_Experiment/Raman/Visible_Camera/Raman_Ryan/172282_1907p890us_highPass.png'
+filename = '/Users/Ryan/Google_Drive/ITER_Laptop/Work/DIIID_Experiment/Raman/Visible_Camera/Raman_Ryan/172282_1906p947us.png'
+#filename = '/Users/Ryan/Google_Drive/ITER_Laptop/Work/DIIID_Experiment/Raman/Visible_Camera/Raman_Ryan/172282_1907p890us_highPass.png'
 #filename = '/Users/Ryan/Google_Drive/ITER_Laptop/Work/DIIID_Experiment/Raman/Visible_Camera/Raman_Ryan/172282_1908p001us_highPass.png'
-#filename = 'C:/Users/sweener/Documents/Work/DIIID_Experiment/Raman/Visible_Camera/Raman_Ryan/172282_1907p613us.png'
-filename = '/Users/Ryan/Google_Drive/ITER_Laptop/Work/DIIID_Experiment/Raman/Visible_Camera/Raman_Ryan/172282_1908p001us.png'
-picTime = 1907.163 #ms
+# the pic below agrees pretty well with psi=0.98
+#filename = '/Users/Ryan/Google_Drive/ITER_Laptop/Work/DIIID_Experiment/Raman/Visible_Camera/Raman_Ryan/172282_1907p613us.png'
+
+# in the pic below, upper field lines look like psi=0.8, while lower blobs look like psi=0.4
+#filename = '/Users/Ryan/Google_Drive/ITER_Laptop/Work/DIIID_Experiment/Raman/Visible_Camera/Raman_Ryan/172282_1908p001us.png'
+picTime = 1908.001 #ms
 shotnumber = 172282
 
 
@@ -120,12 +121,12 @@ phiInWall = np.linspace(0., 2*np.pi, num=100)
 XInWall = RInWall*np.cos(phiInWall)
 YInWall = RInWall*np.sin(phiInWall)
 
-for i in range(0,10):
-    ZInWall = np.linspace(0., 0., num=100) -1. + i*2./9.
-    
-    xIm, yIm = change_To_Camera_Angles(XInWall,YInWall,ZInWall, sigC, gamma, azim, Rc, phiMach, Zc)
-    
-    plt.plot(xIm, yIm, '-', color=colorVes)
+#for i in range(0,10):
+#    ZInWall = np.linspace(0., 0., num=100) -1. + i*2./9.
+#    
+#    xIm, yIm = change_To_Camera_Angles(XInWall,YInWall,ZInWall, sigC, gamma, azim, Rc, phiMach, Zc)
+#    
+#    plt.plot(xIm, yIm, color=colorVes, linewidth=0.5)
     
 ROutWall = 2.34
 phiOutWall = np.linspace(0., 2*np.pi, num=100)
@@ -133,7 +134,7 @@ XOutWall = ROutWall*np.cos(phiOutWall)
 YOutWall = ROutWall*np.sin(phiOutWall)
 ZOutWall = np.linspace(0., 0., num=100) -0.39
 xIm, yIm = change_To_Camera_Angles(XOutWall,YOutWall,ZOutWall, sigC, gamma, azim,  Rc, phiMach, Zc)
-plt.plot(xIm, yIm, '-', color=colorVes)  
+#plt.plot(xIm, yIm, '-', color=colorVes, linewidth=0.5)  
 
 ROutWall = 2.135
 phiOutWall = np.linspace(0., 2*np.pi, num=100)
@@ -141,7 +142,7 @@ XOutWall = ROutWall*np.cos(phiOutWall)
 YOutWall = ROutWall*np.sin(phiOutWall)
 ZOutWall = np.linspace(0., 0., num=100) -0.973
 xIm, yIm = change_To_Camera_Angles(XOutWall,YOutWall,ZOutWall, sigC, gamma, azim,  Rc, phiMach, Zc)
-plt.plot(xIm, yIm, '-', color=colorVes)  
+#plt.plot(xIm, yIm, '-', color=colorVes, linewidth=0.5)  
 
 ROutWall = 2.34
 phiOutWall = np.linspace(0., 2*np.pi, num=100)
@@ -149,13 +150,22 @@ XOutWall = ROutWall*np.cos(phiOutWall)
 YOutWall = ROutWall*np.sin(phiOutWall)
 ZOutWall = np.linspace(0., 0., num=100) + 0.42
 xIm, yIm = change_To_Camera_Angles(XOutWall,YOutWall,ZOutWall, sigC, gamma, azim,  Rc, phiMach, Zc)
-plt.plot(xIm, yIm, '-', color=colorVes) 
+#plt.plot(xIm, yIm, '-', color=colorVes, linewidth=0.5) 
 
 
+# FIELD LINE PLOTTING -------------------------------------
+
+filename = '/Users/Ryan/Google_Drive/ITER_Laptop/Work/DIIID_Experiment/Raman/TRIP3D/172281/psi0p4/out.92'
+allFieldLines = read_3D_Data_To_Array(filename)
+# get the data out of the tuple
+allFieldLines = allFieldLines[0]
+
+
+#for i in np.array([38, 40, 42, 44, 45, 46, 47, 48] ):
 
 if fieldLinesOn:
     numFieldLines = 50
-    for i in np.array([0, 30, 32, 34, 36, 38, 40, 42, 44, 45, 46, 47, 48, 49] ):
+    for i in np.array([40, 43,  45, 47, 49]):
 #    for i in range(0,numFieldLines):
         thisFieldLine = allFieldLines[:,:,i]
         R = thisFieldLine[:,0]
@@ -167,17 +177,44 @@ if fieldLinesOn:
         
         xIm, yIm = change_To_Camera_Angles(X,Y,Z, sigC, gamma, azim,  Rc, phiMach, Zc)
         
-        plt.plot(xIm, yIm, color='lime', linewidth=2)
+        plt.plot(xIm, yIm, color='orange', linewidth=1)
 
+
+filename = '/Users/Ryan/Google_Drive/ITER_Laptop/Work/DIIID_Experiment/Raman/TRIP3D/172281/psi0p8/out.92'
+allFieldLines = read_3D_Data_To_Array(filename)
+# get the data out of the tuple
+allFieldLines = allFieldLines[0]
+
+
+#[48, 49]
+
+## q=3 field lines
+if fieldLinesOn:
+    numFieldLines = 50
+    for i in np.array([43, 46,  48, 49]):
+#    for i in range(0,numFieldLines):
+        thisFieldLine = allFieldLines[:,:,i]
+        R = thisFieldLine[:,0]
+        Z = thisFieldLine[:,1]
+        phi = thisFieldLine[:,2] - np.pi/1.8
+        
+        X = R*np.cos(phi)
+        Y = R*np.sin(phi)
+        
+        xIm, yIm = change_To_Camera_Angles(X,Y,Z, sigC, gamma, azim,  Rc, phiMach, Zc)
+        
+        plt.plot(xIm, yIm, color='YELLOW', linewidth=1)
     
 
+
+# SPI TRAJECTORY -------------------------------------
 # we will now plot the trajectory of the SPI
 phiSPI = 360. - 135.
 alphaInj = 0. # -20. # angle relative to normal of the injection
 RInit = 2.24
 ZInit = 0.72
 RFinal = 1.016
-ZFinal =  -0.9 #-0.4
+ZFinal =  -0.9#-0.4
 numPts=201
 
 
@@ -201,9 +238,9 @@ distInds = np.where(np.round_(distSPI*100., decimals=2) % 10 < 1.0)
 XSPI = RSPI*np.cos(PhiP + phiSPI*deg2Rad)
 YSPI = RSPI*np.sin(PhiP + phiSPI*deg2Rad)
 xIm, yIm = change_To_Camera_Angles(XSPI,YSPI,ZSPI, sigC, gamma, azim,  Rc, phiMach, Zc)
-plt.plot(xIm, yIm, color='cyan', linewidth=2)
+plt.plot(xIm, yIm, color='red', linewidth=2)
 plt.plot(xIm[distInds], yIm[distInds], 'o', color='black', markersize=3)
-
+plt.plot(xIm[np.squeeze(distInds)[5]], yIm[np.squeeze(distInds)[5]], 'o', color='magenta', markersize=9)
 
 xUpOMBound2, yUpOMBound2, xLowOMBound2, yLowOMBound2, xShelfBound2, yShelfBound2, xInboard2, yInboard2 = pixels_Vacuum_Vessel()
 
@@ -212,10 +249,10 @@ xLowOMBound3, yLowOMBound3 = pixels_To_Image_Coords(xLowOMBound2, yLowOMBound2, 
 xShelfBound3, yShelfBound3 = pixels_To_Image_Coords(xShelfBound2, yShelfBound2, totalXPixels, totalYPixels, scaledHeight*totalXPixels/totalYPixels,scaledHeight, horizOffset, vertOffset)
 xInboard3, yInboard3 = pixels_To_Image_Coords(xInboard2, yInboard2, totalXPixels, totalYPixels, scaledHeight*totalXPixels/totalYPixels,scaledHeight, horizOffset, vertOffset)
  
-plt.plot(xUpOMBound3, yUpOMBound3, 'o', color='red')
-plt.plot(xLowOMBound3, yLowOMBound3, 'o', color='red')
-plt.plot(xShelfBound3, yShelfBound3, 'o', color='red')
-plt.plot(xInboard3, yInboard3, 'o', color='red')
+#plt.plot(xUpOMBound3, yUpOMBound3, 'o', color='red')
+#plt.plot(xLowOMBound3, yLowOMBound3, 'o', color='red')
+#plt.plot(xShelfBound3, yShelfBound3, 'o', color='red')
+#plt.plot(xInboard3, yInboard3, 'o', color='red')
     
     
 plt.xlim(-0.13, 0.36)
@@ -290,8 +327,10 @@ implot = plt.imshow(im, aspect='equal', extent=(horizOffset,
                                                 scaledHeight + vertOffset))
 
 
-plt.plot(RProj, ZSPI, color='cyan')
+plt.plot(RProj, ZSPI, color='red')
 plt.plot(RProj[distInds], ZSPI[distInds], 'o', color='black', markersize=3)
+
+plt.plot(RProj[np.squeeze(distInds)[5]], ZSPI[np.squeeze(distInds)[5]], 'o', color='magenta', markersize=9)
 plt.ylim([-1.5, 1.5])
 plt.xlim([0.9, 2.5])
 plt.xlabel('$R$ (m)')
@@ -306,20 +345,22 @@ plt.yticks(np.arange(-1.0, 1.1, step=1.))
 left, bottom, width, height = [0.34, 0.12, 0.15, 0.15]
 ax2 = fig.add_axes([left, bottom, width, height])
 
-ax2.plot(XSPI, YSPI, color='cyan', linewidth=3)
-ax2.plot(XOutWall, YOutWall, color='red')
-ax2.plot(XInWall, YInWall, color='red')
+ax2.plot(XSPI, YSPI, color='red', linewidth=3)
+ax2.plot(XOutWall, YOutWall, color='black')
+ax2.plot(XInWall, YInWall, color='black')
 ax2.plot(Rc*np.cos((360. - phiMach)*deg2Rad), Rc*np.sin((360. - phiMach)*deg2Rad), 'o', color='green')
 ax2.set_aspect('equal')
 # Turn off tick labels
 ax2.set_yticklabels([])
 ax2.set_xticklabels([])
 
-plt.text(-3, 3.5, 'Top-down\nview', color='white', fontsize=12)
-plt.text(-15, 25.5, np.array2string(np.array(shotnumber)) + '\n' + 
-    np.array2string(np.array(picTime)) + ' ms', color='white', fontsize=12)
-    
-    
+plt.text(-2.2, -0.4, 'Top-down\nview', color='black', fontsize=16)
+plt.text(-12, 20., np.array2string(np.array(shotnumber)) + '\n' + 
+    np.array2string(np.array(picTime)) + ' ms', color='white', fontsize=16)
+
+if fieldLinesOn:
+    plt.text(-6, 5, '$q=2$', color='orange', fontsize=20)    
+    plt.text(-1, 15, '$q=3$', color='yellow', fontsize=20)    
     
     
     
